@@ -1,0 +1,18 @@
+.login-container{
+    border: 3px solid black;
+    margin-top: 10px;
+    background-image: url("../../assets/login-screen.jpg");
+    background-size: cover;
+    opacity: 90%;
+}
+
+.login-container .login-card{
+    width: 30%;
+    height: 50%;
+    background-color: rgb(15,42,72,255);
+    color: whitesmoke;
+}
+
+.login-container .login-card .login-label{
+    color: whitesmoke;
+}
