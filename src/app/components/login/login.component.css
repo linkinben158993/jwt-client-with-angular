@@ -1,0 +1,33 @@
+.login-container{
+    padding: 0px;
+    border: 3px solid black;
+    margin-top: 10px;
+    background-image: url("../../../assets/login-screen.jpg");
+    background-size: cover;
+    opacity: 85%;
+}
+
+.login-card{
+    width: 30%;
+    height: 80%;
+    background-color: rgb(15,42,72,255);
+    color: whitesmoke;
+    margin-bottom: 10px;
+}
+
+.login-mat-header{
+    border: 3px solid black;
+    margin-bottom: 10px;
+}
+
+.login-mat-content{
+    display: block !important;
+}
+
+.login-mat-content .mat-content{
+    margin-top: 10px;
+}
+
+.login-card .login-label{
+    color: whitesmoke;
+}
