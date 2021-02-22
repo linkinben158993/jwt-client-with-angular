@@ -26,14 +26,22 @@ export class LoginComponent implements OnInit {
   loginProcess() {
     if (this.formGroup.valid) {
       this.authenticate.login(this.formGroup.value).subscribe(result => {
-          console.log("Success");
-          console.log(result);
-          alert(result.response.message);
+        console.log("Success");
+        console.log(result);
+        alert(result.response.message + " Motherfucker!");
       }, error => {
         console.log("Failed");
         console.log(error);
-        alert(error.error.message);
+        alert(error.error.message + " Motherfucker!");
       })
     }
+    else {
+      alert("Must Fill In Information To Login");
+    }
+  }
+
+  registerProcess() {
+    console.log("Sup Bitch");
+
   }
 }

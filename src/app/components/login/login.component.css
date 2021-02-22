@@ -1,4 +1,4 @@
-.login-container{
+.login-container {
     padding: 0px;
     border: 3px solid black;
     margin-top: 10px;
@@ -7,27 +7,51 @@
     opacity: 85%;
 }
 
-.login-card{
+.login-card {
     width: 30%;
-    height: 80%;
-    background-color: rgb(15,42,72,255);
+    height: 95%;
+    background-color: rgb(15, 42, 72, 255);
     color: whitesmoke;
     margin-bottom: 10px;
 }
 
-.login-mat-header{
+.login-mat-header {
     border: 3px solid black;
     margin-bottom: 10px;
 }
 
-.login-mat-content{
+.login-mat-content {
     display: block !important;
 }
 
-.login-mat-content .mat-content{
+.login-mat-content .mat-content {
     margin-top: 10px;
 }
 
-.login-card .login-label{
+.login-card .login-label {
     color: whitesmoke;
+}
+
+.mat-card-action {
+    border: 2px solid;
+    width: 70%;
+}
+
+.mat-card-action::after {
+    display: table-row;
+    border: 1px solid;
+}
+
+.google {
+    background: url("../../../assets/GgLogo.png");
+    background-color: whitesmoke;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+}
+
+.facebook {
+    background: url("../../../assets/FbLogo.png");
+    background-color: whitesmoke;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
 }
