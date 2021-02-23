@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
+import { LogIn } from 'src/app/stores/actions/auth.actions';
+import { AppState, selectAuthState } from 'src/app/stores/app.states';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +14,17 @@ import { AuthServiceService } from 'src/app/services/authService/auth-service.se
 })
 export class LoginComponent implements OnInit {
   formGroup: FormGroup;
+  getState: Observable<any>;
+  errorMessage: string | null;
 
-  constructor(private authenticate: AuthServiceService, private router: Router) { }
+  constructor(private store: Store<AppState>, private authenticate: AuthServiceService, private router: Router) {
+    this.getState = this.store.select(selectAuthState);
+   }
 
   ngOnInit(): void {
+    this.getState.subscribe((state)=>{
+      console.log("Login on init state:", state);
+    })
     this.initForm();
   }
 
@@ -26,18 +37,7 @@ export class LoginComponent implements OnInit {
 
   loginProcess() {
     if (this.formGroup.valid) {
-      this.authenticate.login(this.formGroup.value).subscribe((result) => {
-        console.log("Component:", result);
-        if(result.response){
-          console.log("Success");
-          alert(result.response.message + " Motherfucker!");
-          this.router.navigate(['/home']);  
-        }
-        else{
-          console.log("Failed");
-          alert(result[0].error.message + " Motherfucker!");
-        }
-      });
+      this.store.dispatch(new LogIn(this.formGroup.value));
     }
     else {
       alert("Must Fill In Information To Login");
@@ -46,6 +46,5 @@ export class LoginComponent implements OnInit {
 
   registerProcess() {
     console.log("Sup Bitch");
-
   }
 }

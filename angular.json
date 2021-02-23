@@ -128,5 +128,8 @@
       "styleext": "scss"
     }
   },
-  "defaultProject": "jwt-client"
+  "defaultProject": "jwt-client",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

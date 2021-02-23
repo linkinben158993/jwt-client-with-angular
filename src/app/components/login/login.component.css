@@ -2,7 +2,7 @@
     padding: 0px;
     border: 3px solid black;
     margin-top: 10px;
-    background-image: url("../../../assets/login-screen.jpg");
+    background-image: url('../../../assets/login-screen.jpg');
     background-size: cover;
     opacity: 85%;
 }

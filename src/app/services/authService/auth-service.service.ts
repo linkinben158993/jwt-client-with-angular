@@ -20,25 +20,25 @@ export class AuthServiceService {
         this.storeJwtToken(result.response.data);
         mapTo([true, result]);
       }),
-      catchError(error =>{
+      catchError(error => {
         return of([error]);
       })
     );
   }
 
-  private storeJwtToken(jwt: string){
+  private storeJwtToken(jwt: string) {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
-  getJwtToken(){
+  getJwtToken() {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return !!this.getJwtToken();
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem(this.JWT_TOKEN);
   }
 }

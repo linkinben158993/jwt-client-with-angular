@@ -11,11 +11,16 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { SocialLoginModule } from 'angularx-social-login';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthServiceService } from './services/authService/auth-service.service';
+import { AuthEffects } from './stores/effects/auth.effects';
+import { reducer } from './stores/reducers/auth.reducers';
 
 
 @NgModule({
@@ -39,9 +44,13 @@ import { LoginComponent } from './components/login/login.component';
     ReactiveFormsModule,
     SocialLoginModule,
     MatCheckboxModule,
-    MatSliderModule
+    MatSliderModule,
+    StoreModule.forRoot(reducer, {}),
+    EffectsModule.forRoot([AuthEffects])
   ],
-  providers: [],
+  providers: [
+    AuthServiceService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
