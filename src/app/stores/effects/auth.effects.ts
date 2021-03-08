@@ -20,16 +20,22 @@ export class AuthEffects {
     , switchMap(payload => {
       return this.authService.login(payload).pipe(map((response) => {
         console.log(response);
-        if(!response.response){
+        if (!response.response) {
           console.log("Failed");
-          alert(response[0].error.message + " Motherfucker!");
-          return new LogInFailure({error: response[0].error.message});
+          alert(response[0].error.message);
+          return new LogInFailure({ error: response[0].error.message });
         }
-        else{
+        else {
           console.log(response.response.data.accessToken);
           console.log("Success");
-          alert(response.response.message + " Motherfucker!");
-          return new LogInSuccess({ token: response.response.data.accessToken, username: response.response.data.uName, uId: response.response.data.uId });
+          alert(response.response.message);
+          console.log(response.response);
+          return new LogInSuccess({
+            token: response.response.data.accessToken,
+            refresh_token: response.response.data.refreshToken,
+            username: response.response.data.uName,
+            uId: response.response.data.uId
+          });
 
         }
       })
@@ -44,7 +50,7 @@ export class AuthEffects {
   LogInSuccess: Observable<any> = this.actions.pipe(
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
-      localStorage.setItem('token', user.payload.token);
+      console.log(user);
       this.router.navigateByUrl('/home');
     })
   );

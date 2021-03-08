@@ -17,7 +17,9 @@ export class AuthServiceService {
   login(data): Observable<any> {
     return this.http.post<any>(`${baseUrl}authenticate/login`, data).pipe(
       tap(result => {
-        this.storeJwtToken(result.response.data);
+        console.log('Result: ', result.response.data);
+        this.storeJwtToken(result.response.data.accessToken);
+        this.storeRefreshToken(result.response.data.refreshToken);
         mapTo([true, result]);
       }),
       catchError(error => {
@@ -28,6 +30,10 @@ export class AuthServiceService {
 
   private storeJwtToken(jwt: string) {
     localStorage.setItem(this.JWT_TOKEN, jwt);
+  }
+
+  private storeRefreshToken(refresh_jwt: string) {
+    localStorage.setItem(this.REFRESH_TOKEN, refresh_jwt);
   }
 
   getJwtToken() {
