@@ -7,7 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
-  { path: 'login', canActivate: [AuthGuardService], canLoad: [AuthGuardService],component: LoginComponent },
+  { path: 'login', canActivate: [AuthGuardService], canLoad: [AuthGuardService], component: LoginComponent },
   { path: 'home', canActivate: [HomeGuardService], canLoad: [HomeGuardService], component: HomeComponent }
 ]
 
