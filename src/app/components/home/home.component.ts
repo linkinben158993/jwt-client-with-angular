@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -7,8 +7,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
-  /** Based on the screen size, switch from standard to one column per row */
+export class HomeComponent implements OnInit {
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
@@ -32,4 +31,9 @@ export class HomeComponent {
   constructor(private breakpointObserver: BreakpointObserver) {
     console.log('Init Home!');
   }
+  ngOnInit(): void {
+    console.log()
+  }
+
+
 }

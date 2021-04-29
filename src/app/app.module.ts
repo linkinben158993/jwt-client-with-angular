@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -29,6 +30,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { AuthServiceService } from './services/authService/auth-service.service';
 import { AuthEffects } from './stores/effects/auth.effects';
 import { reducer } from './stores/reducers/auth.reducers';
+import { ModalComponent } from './components/login/modal/modal.component';
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { reducer } from './stores/reducers/auth.reducers';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    NavComponent
+    NavComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { reducer } from './stores/reducers/auth.reducers';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatToolbarModule,
     HttpClientModule,
     FormsModule,
@@ -62,7 +66,7 @@ import { reducer } from './stores/reducers/auth.reducers';
     MatListModule,
     MatGridListModule,
     MatMenuModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   providers: [
     AuthServiceService,

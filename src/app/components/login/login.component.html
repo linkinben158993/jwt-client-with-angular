@@ -16,12 +16,13 @@
                     <form fxLayoutAligh="stretch" fxLayout="column" [formGroup]="formGroup" (ngSubmit)="loginProcess()">
                         <mat-form-field class="example-full-width">
                             <mat-label class="login-label">Your Username</mat-label>
-                            <input matInput placeholder="Username" formControlName="username">
+                            <input matInput placeholder="Username" formControlName="username"
+                                (keydown.enter)="loginProcess()">
                         </mat-form-field>
                         <mat-form-field class="example-full-width">
                             <mat-label class="login-label">Your Password</mat-label>
                             <input matInput type="password" placeholder="Enter Your Password Here"
-                                formControlName="password">
+                                formControlName="password" (keydown.enter)="loginProcess()">
                         </mat-form-field>
                     </form>
                 </div>
@@ -30,9 +31,12 @@
         <div class="mat-card-actions" fxLayoutAlign="center center">
             <mat-card-actions class="mat-card-actions-wrapper" fxLayout="row wrap" fxLayoutAlign="center baseline">
                 <button class="mat-card-action" mat-raised-button type="submit" (click)="loginProcess()">Login</button>
-                <button class="mat-card-action" mat-raised-button type="submit" (click)="registerProcess()">Register</button>
-                <button class="mat-card-action google" mat-raised-button type="submit">Signin/Register With Google</button>
-                <button class="mat-card-action facebook" mat-raised-button type="submit">Signin/Register With Facebook</button>
+                <button class="mat-card-action" mat-raised-button type="submit"
+                    (click)="registerProcess()">Register</button>
+                <button class="mat-card-action google" mat-raised-button type="submit">Signin/Register With
+                    Google</button>
+                <button class="mat-card-action facebook" mat-raised-button type="submit">Signin/Register With
+                    Facebook</button>
                 <button class="mat-card-action" mat-raised-button type="submit">Forgot Password</button>
             </mat-card-actions>
         </div>

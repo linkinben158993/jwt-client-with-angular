@@ -28,23 +28,23 @@ export class AuthServiceService {
     );
   }
 
-  private storeJwtToken(jwt: string) {
+  private storeJwtToken(jwt: string): void {
     localStorage.setItem(this.JWT_TOKEN, jwt);
   }
 
-  private storeRefreshToken(refresh_jwt: string) {
-    localStorage.setItem(this.REFRESH_TOKEN, refresh_jwt);
+  private storeRefreshToken(refreshJwt: string): void {
+    localStorage.setItem(this.REFRESH_TOKEN, refreshJwt);
   }
 
-  getJwtToken() {
+  getJwtToken(): string {
     return localStorage.getItem(this.JWT_TOKEN);
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return !!this.getJwtToken();
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem(this.JWT_TOKEN);
   }
 }
