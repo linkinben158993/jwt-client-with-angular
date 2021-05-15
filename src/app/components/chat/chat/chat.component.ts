@@ -1,12 +1,12 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
-import { WebSocketAPI } from '../../../services/messageService/web-socket.service';
-import { map } from 'rxjs/operators';
-import { NavigationStart, Router } from '@angular/router';
-import { Tile } from '../dialog/dialog.component';
 import { DataService } from 'src/app/services/data/data.service';
+import { WebSocketAPI } from '../../../services/messageService/web-socket.service';
+import { Tile } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-chat',
@@ -110,7 +110,13 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         { text: 4, cols: 2, rows: 1, color: '#DDBDF1', classname: 'action-2' },
       ];
       mine[0].text = message;
-      this.dialogs.push(mine);
+      // Emit appending mine tile to child
+      this.dataService.onGetCommand.emit({
+        message: {
+          msgCommand: 'APPEND_CHAT',
+        },
+        data: mine,
+      });
 
       this.webSocketAPI.sendMessage({
         sender: currentUser.username, content: message, messageType: 'CHAT'
