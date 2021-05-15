@@ -6,6 +6,7 @@ export interface DialogData {
   action: string;
   username: string;
   password: string;
+  dob: string;
 }
 
 @Component({
@@ -14,16 +15,16 @@ export interface DialogData {
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  ngOnInit(): void {
-
-  }
-
   private action: string;
 
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
     this.action = data.action;
+  }
+
+  ngOnInit(): void {
+
   }
 
   onNoClick(): void {

@@ -1,0 +1,30 @@
+<div class="grid-chat-container">
+    <h1>Public Chat</h1>
+    <mat-grid-list cols="3" rowHeight="400px" (window:beforeunload)="unloadHandler()">
+        <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+            <mat-card class="chat-card">
+                <mat-card-header>
+                    <mat-card-title>
+                        {{card.title}}
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+                    <div *ngIf="isChatView(card)" class="chat-container">
+                        <app-dialog [dialogs]="dialogs">
+
+                        </app-dialog>
+                    </div>
+                    <div *ngIf="isChatView(card)" class="chat-input-container">
+                        <mat-form-field class="input-chat">
+                            <mat-label>Message</mat-label>
+                            <input matInput #message maxlength="256" placeholder="Ex. Hello..."
+                                (keydown.enter)="sendMessage($event)" autofocus>
+                        </mat-form-field>
+                        <button class="submit-chat" mat-raised-button color="primary" (click)="sendMessage($event)">Send
+                            Message</button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

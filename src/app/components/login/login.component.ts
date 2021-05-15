@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
@@ -31,16 +31,21 @@ export class LoginComponent implements OnInit {
     this.getState = this.store.select(selectAuthState);
     this.socialProvider = 'http://localhost:4201/oauth2/login';
     this.route.params.subscribe((params) => {
-      const credential = jwt_decode(params.credential);
-      const credentialObject = JSON.parse(credential['sub']);
-      console.log(credentialObject);
+      if (params?.credential) {
+        const credential = jwt_decode(params.credential);
+        const credentialObject = JSON.parse(credential['sub']);
+        console.log(credentialObject);
+      }
     });
   }
 
   ngOnInit(): void {
     this.getState.subscribe((state) => {
       console.log('Login on init state:', state);
-    })
+      if (state.errorMessage) {
+        this.message.showNotification(state.errorMessage, 3);
+      }
+    });
     this.initForm();
   }
 
@@ -67,7 +72,8 @@ export class LoginComponent implements OnInit {
     // const height = 800;
     // const top = (window.outerHeight - height) / 2;
     // const left = (window.outerWidth - width) / 2;
-    // const socialLoginWindow = window.open(socialLoginUrl, 'Social Login', `width=${width} height=${height},scrollbars=0,top=${top},left=${left}`);
+    // const socialLoginWindow
+    // = window.open(socialLoginUrl, 'Social Login', `width=${width} height=${height},scrollbars=0,top=${top},left=${left}`);
     // setInterval(() => {
     //   if (socialLoginWindow == null || socialLoginWindow.closed) {
     //     console.log('Is closed:', socialLoginWindow.closed);
@@ -78,21 +84,31 @@ export class LoginComponent implements OnInit {
   }
 
   registerProcess(): void {
-    console.log('Open Modal Bitch');
     const dialogRef = this.dialog.open(ModalComponent, {
-      width: '300px',
-      height: '300px',
-      data: { action: 'register', username: '', password: '' }
+      width: '400px',
+      height: '500px',
+      data: { action: 'register', username: '', password: '', dob: '' }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      if (!result.username || !result.password) {
-        this.message.showNotification('Must Fill In Information To Register', 3);
+    dialogRef.afterClosed().subscribe(
+      {
+        next: (result) => {
+          if (result) {
+            if (!result.username || !result.password || !result.dob) {
+              this.message.showNotification('Must Fill In Information To Register', 3);
+            }
+            else {
+              const formattedDate = new Date(result.dob).toISOString().substr(0, 10);
+              this.store.dispatch(new SignUp({ email: result.username, password: result.password, dob: formattedDate }));
+            }
+            console.log('The dialog was closed with data!');
+          }
+          console.log('The dialog was closed without data!');
+        },
+        error: (err) => {
+          console.log(err);
+        }
       }
-      else {
-        this.store.dispatch(new SignUp({ username: result.username, password: result.password }));
-      }
-    });
+    );
   }
 }

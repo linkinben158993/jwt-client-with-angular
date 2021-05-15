@@ -1,0 +1,8 @@
+<div class="dialog-container">
+    <mat-grid-list *ngFor="let item of dialogs" cols="5" rowHeight="50px" class="dialog-content">
+        <mat-grid-tile *ngFor="let tile of item" [colspan]="tile.cols" [rowspan]="tile.rows"
+            [style.background]="tile.color" [class]="tile.classname">
+            {{tile.text}}
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

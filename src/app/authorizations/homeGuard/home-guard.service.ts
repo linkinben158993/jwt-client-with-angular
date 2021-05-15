@@ -5,14 +5,14 @@ import { AuthServiceService } from 'src/app/services/authService/auth-service.se
 @Injectable({
   providedIn: 'root'
 })
-export class HomeGuardService implements CanActivate, CanLoad{
+export class HomeGuardService implements CanActivate, CanLoad {
 
   constructor(private authService: AuthServiceService, private router: Router) { }
 
-  canActivate(){
+  canActivate(): boolean {
     return this.canLoad();
   }
-  canLoad(){
+  canLoad(): boolean {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
     }

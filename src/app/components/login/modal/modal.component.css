@@ -1,0 +1,21 @@
+.field-container{
+    font-size: large;
+}
+
+.field-input{
+    width: 100%;
+}
+
+.action-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.action{
+    font-size: large;
+}
+
+.alert{
+    color: red;
+}

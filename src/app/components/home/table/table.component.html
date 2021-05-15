@@ -1,0 +1,45 @@
+<div class="mat-elevation-z8 table-container">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Fyodor Dostoevsky" #input>
+  </mat-form-field>
+  <table #table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="dataSource">
+    <!-- no Column -->
+    <ng-container matColumnDef="no">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+      <td class="cell-content" mat-cell *matCellDef="let item; let i = index">{{(paginator.pageIndex *
+        paginator.pageSize) + (i + 1)}}
+      </td>
+    </ng-container>
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="uId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>User Id</th>
+      <td class="cell-content" mat-cell *matCellDef="let row">{{row.uId}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+      <td class="cell-content" mat-cell *matCellDef="let row">{{row.fullName}}</td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+      <td class="cell-content" mat-cell *matCellDef="let row">{{row.email}}</td>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+      <td class="cell-content" mat-cell *matCellDef="let row">{{row.role}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageIndex]="0" [pageSize]="50" [pageSizeOptions]="[25, 50, 100, 250]">
+  </mat-paginator>
+</div>

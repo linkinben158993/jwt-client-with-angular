@@ -5,17 +5,23 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,13 +30,18 @@ import { StoreModule } from '@ngrx/store';
 import { SocialLoginModule } from 'angularx-social-login';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ChatComponent } from './components/chat/chat/chat.component';
+import { DialogComponent } from './components/chat/dialog/dialog.component';
 import { HomeComponent } from './components/home/home.component';
+import { TableComponent } from './components/home/table/table.component';
 import { LoginComponent } from './components/login/login.component';
-import { NavComponent } from './components/nav/nav.component';
-import { AuthServiceService } from './services/authService/auth-service.service';
-import { AuthEffects } from './stores/effects/auth.effects';
-import { reducer } from './stores/reducers/auth.reducers';
 import { ModalComponent } from './components/login/modal/modal.component';
+import { NavComponent } from './components/nav/nav.component';
+import { APIFactory } from './services/API/apiFactory';
+import { AuthServiceService } from './services/authService/auth-service.service';
+import { AdminUserService } from './services/userService/admin-user.service';
+import { reducers } from './stores/app.states';
+import { AuthEffects } from './stores/effects/auth.effects';
 
 
 @NgModule({
@@ -39,7 +50,10 @@ import { ModalComponent } from './components/login/modal/modal.component';
     LoginComponent,
     HomeComponent,
     NavComponent,
-    ModalComponent
+    ModalComponent,
+    TableComponent,
+    ChatComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,8 +72,6 @@ import { ModalComponent } from './components/login/modal/modal.component';
     SocialLoginModule,
     MatCheckboxModule,
     MatSliderModule,
-    StoreModule.forRoot(reducer, {}),
-    EffectsModule.forRoot([AuthEffects]),
     LayoutModule,
     MatSidenavModule,
     MatIconModule,
@@ -67,9 +79,17 @@ import { ModalComponent } from './components/login/modal/modal.component';
     MatGridListModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressBarModule,
+    StoreModule.forRoot(reducers, {}),
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [
-    AuthServiceService,
+    AuthServiceService, AdminUserService, APIFactory
   ],
   bootstrap: [AppComponent]
 })

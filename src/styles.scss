@@ -6,18 +6,18 @@
 // **Be sure that you only ever include this mixin once!**
 @include mat-core();
 
-// Define the default theme (same as the example above).
-$candy-app-primary: mat-palette($mat-indigo);
-$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
-$candy-app-theme:   mat-light-theme((
-  color: (
-    primary: $candy-app-primary,
-    accent: $candy-app-accent,
-  )
-));
+// // Define the default theme (same as the example above).
+// $candy-app-primary: mat-palette($mat-indigo);
+// $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+// $candy-app-theme:   mat-light-theme((
+//   color: (
+//     primary: $candy-app-primary,
+//     accent: $candy-app-accent,
+//   )
+// ));
 
-// Include the default theme styles (color and default density)
-@include angular-material-theme($candy-app-theme);
+// // Include the default theme styles (color and default density)
+// @include angular-material-theme($candy-app-theme);
 
 
 // Define an alternate dark theme.

@@ -1,0 +1,12 @@
+.full-width-table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.cell-content{
+  text-align: left;
+}
