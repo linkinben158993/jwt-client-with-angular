@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
 import { DataService } from 'src/app/services/data/data.service';
+import { v4 as UUID } from 'uuid';
 import { WebSocketAPI } from '../../../services/messageService/web-socket.service';
 import { Tile } from '../dialog/dialog.component';
 
@@ -23,14 +24,14 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Online Users', cols: 1, rows: 1 },
-          { title: 'Chat Content', cols: 2, rows: 1 },
+          { title: 'Online Users', cols: 1, rows: 1, classname: 'online-users' },
+          { title: 'Chat Content', cols: 2, rows: 1, classname: 'chat-content' },
         ];
       }
 
       return [
-        { title: 'Online Users', cols: 1, rows: 2 },
-        { title: 'Chat Content', cols: 2, rows: 1 },
+        { title: 'Online Users', cols: 1, rows: 2, classname: 'online-users' },
+        { title: 'Chat Content', cols: 2, rows: 1, classname: 'chat-content' },
       ];
     })
   );
@@ -72,7 +73,16 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
 
-  ngAfterViewInit(): void { }
+  isOnlineUsers(card: any): boolean {
+    if (card.title === 'Online Users') {
+      return true;
+    }
+    return false;
+  }
+
+  ngAfterViewInit(): void {
+
+  }
 
   // On closing window
   @HostListener('window:beforeunload', ['$event'])
@@ -83,7 +93,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private connect(): void {
     const currentUser = JSON.parse(this.authService.getCurrentUser()) as User;
-    const uniqueRoomId = '123456';
+    const uniqueRoomId = UUID();
     const payload = {
       username: currentUser.username,
       uniqueRoomId
@@ -128,6 +138,21 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
   handleMessage(message): void {
     const command = JSON.parse(message);
     const currentUser = JSON.parse(this.authService.getCurrentUser()) as User;
+    const onlineUsers = command.trackingVariables.online_users;
+    console.log('Command:', command);
+    console.log('Online users:', onlineUsers);
+    if (onlineUsers) {
+      const currentParticipants = onlineUsers.map((item, index) => ({
+        position: index,
+        name: item,
+      }));
+      this.dataService.onGetCommand.emit({
+        message: {
+          msgCommand: 'UPDATE_PARTICIPANTS',
+        },
+        data: currentParticipants,
+      });
+    }
     // People message
     const people: Tile[] = [
       { text: 1, cols: 1, rows: 2, color: 'lightblue', classname: 'icon' },
@@ -154,11 +179,9 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         data: people,
       });
     }
-    else if (!command.messageType && !command.sender && !command.content) {
-      const reloadMessages = JSON.parse(message);
-      console.log(reloadMessages);
-      const reloadDialogs = reloadMessages.map((item) => {
-        console.log(item.sender);
+    else if (command.messageType === 'REQUEST_DATA' && command.sender === currentUser.username) {
+      const publicSessionId = command.publicSessionId;
+      const reloadDialogs = command.trackingMessages[publicSessionId].map((item) => {
         if (item.sender === currentUser.username) {
           const mineReload: Tile[] = [
             { text: 2, cols: 4, rows: 1, color: 'lightgreen', classname: 'message' },
@@ -179,7 +202,7 @@ export class ChatComponent implements OnInit, AfterViewInit, OnDestroy {
         return peopleReload;
       });
 
-      if (reloadMessages.length !== 0) {
+      if (reloadDialogs.length !== 0) {
         this.dataService.onGetCommand.emit({
           message: {
             msgCommand: 'APPEND_LIST_CHAT',

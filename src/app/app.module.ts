@@ -1,4 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -21,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -28,9 +30,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SocialLoginModule } from 'angularx-social-login';
+import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat/chat.component';
+import { ParticipantsComponent } from './components/chat/chat/online/participants/participants.component';
+import { RoomComponent } from './components/chat/chat/room/room.component';
 import { DialogComponent } from './components/chat/dialog/dialog.component';
 import { HomeComponent } from './components/home/home.component';
 import { TableComponent } from './components/home/table/table.component';
@@ -53,7 +58,9 @@ import { AuthEffects } from './stores/effects/auth.effects';
     ModalComponent,
     TableComponent,
     ChatComponent,
-    DialogComponent
+    DialogComponent,
+    ParticipantsComponent,
+    RoomComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +92,9 @@ import { AuthEffects } from './stores/effects/auth.effects';
     MatPaginatorModule,
     MatSortModule,
     MatProgressBarModule,
+    ScrollingModule,
+    TableVirtualScrollModule,
+    MatStepperModule,
     StoreModule.forRoot(reducers, {}),
     EffectsModule.forRoot([AuthEffects]),
   ],

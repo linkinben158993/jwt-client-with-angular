@@ -8,12 +8,7 @@
     flex-direction: column;
 }
 
-.chat-container{
-    overflow: hidden;
-    overflow-anchor: none;
-}
-
-.dashboard-card-content {
+.dashboard-card-content-chat-content {
     text-align: center;
     overflow-y: scroll;
 }
@@ -26,4 +21,13 @@
     width: 25%;
     overflow-anchor: auto;
 }
-  
+
+.chat-container{
+    overflow: hidden;
+    overflow-anchor: none;
+}
+
+
+.dashboard-card-content-online-users {
+    height: 700px;
+}

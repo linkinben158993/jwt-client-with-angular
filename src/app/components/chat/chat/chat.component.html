@@ -8,7 +8,7 @@
                         {{card.title}}
                     </mat-card-title>
                 </mat-card-header>
-                <mat-card-content class="dashboard-card-content">
+                <mat-card-content [class]="'dashboard-card-content-'+card.classname">
                     <div *ngIf="isChatView(card)" class="chat-container">
                         <app-dialog [dialogs]="dialogs">
 
@@ -23,6 +23,7 @@
                         <button class="submit-chat" mat-raised-button color="primary" (click)="sendMessage($event)">Send
                             Message</button>
                     </div>
+                    <app-participants *ngIf="isOnlineUsers(card)"></app-participants>
                 </mat-card-content>
             </mat-card>
         </mat-grid-tile>

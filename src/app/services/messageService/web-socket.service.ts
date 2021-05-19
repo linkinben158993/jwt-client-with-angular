@@ -6,7 +6,7 @@ import { ChatComponent } from '../../components/chat/chat/chat.component';
 export class WebSocketAPI {
     private payload;
     webSocketEndPoint = 'http://localhost:4201/ws';
-    topic = '/topic/public';
+    topic = '/topic/public/';
     stompClient: any;
     chatComponent: ChatComponent;
     publicRoomId: string;
@@ -21,9 +21,11 @@ export class WebSocketAPI {
         this.stompClient = Stomp.over(ws);
         this.stompClient.connect(
             payload
-            , () => {
+            , (frame) => {
+                console.log('Frame:', frame);
+                this.publicRoomId = frame.headers.uniqueRoomId;
                 // On connection subscribe to /topic/public channel
-                this.stompClient.subscribe(this.topic, (sdkEvent) => {
+                this.stompClient.subscribe(this.topic + this.publicRoomId, (sdkEvent) => {
                     this.onMessageReceived(sdkEvent);
                 });
                 // Send connecting signal to /topic/public channel
@@ -32,8 +34,7 @@ export class WebSocketAPI {
                     content: payload.username + ' has entered the chat!',
                     messageType: 'JOIN',
                 };
-                this.publicRoomId = payload.uniqueRoomId;
-                this.stompClient.send('/app/join', {}, JSON.stringify(enterUser));
+                this.stompClient.send('/app/join/' + this.publicRoomId, {}, JSON.stringify(enterUser));
                 this.requestAllMessages(new User('', payload.username, '', ''));
                 this.stompClient.reconnect_delay = 2000;
             }, this.errorCallBack);
@@ -41,7 +42,7 @@ export class WebSocketAPI {
 
     disconnect(): void {
         if (this.stompClient !== null) {
-            this.stompClient.disconnect();
+            this.stompClient.disconnect((): void => { }, { uniqueRoomId: this.publicRoomId });
         } else {
             console.log('Disconnected');
         }
@@ -77,7 +78,7 @@ export class WebSocketAPI {
             sender: user.username,
             messageType: 'REQUEST_DATA'
         };
-        this.stompClient.send('/app/public/messages/' + this.publicRoomId + '/clean', {}, JSON.stringify(message));
+        this.stompClient.send(`/app/public/messages/${this.publicRoomId}/clean`, {}, JSON.stringify(message));
     }
 
     onMessageReceived(message): void {

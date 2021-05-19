@@ -1,0 +1,21 @@
+.input-full-width{
+    width: 100%;
+}
+
+.form-container{
+    width: 100%;
+}
+
+.btn-action-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-action{
+    width: 25%;
+}
+
+.card-title-container{
+    width: 100%;
+}

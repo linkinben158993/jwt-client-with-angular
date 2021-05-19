@@ -1,0 +1,38 @@
+<mat-grid-list cols="1" rowHeight="100px">
+    <mat-grid-tile [rowspan]="1">
+        <mat-card class="card-title-container">How Many Question For Your Poll!</mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile class="input-question-number" [rowspan]="1">
+        <form class="form-container" [formGroup]="questionNumber">
+            <mat-form-field class="input-full-width">
+                <mat-label>Message</mat-label>
+                <input matInput placeholder="Number Of Questions" formControlName="questionNumber" required>
+            </mat-form-field>
+            <div class="btn-action-container">
+                <button class="btn-action" mat-raised-button color="primary" (click)="setDynamicStep()">Set
+                    Questions</button>
+                <button class="btn-action" mat-raised-button color="primary" (click)="resetSteps()">Reset All</button>
+            </div>
+        </form>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="1">
+        <mat-card class="card-title-container">Your Questions Will Should Appear Bellow!</mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="3">
+        <form class="form-container" [formGroup]="formGroup">
+            <mat-horizontal-stepper formArrayName="questionsForm" linear>
+                <mat-step [formGroupName]="i" [stepControl]="questionsForm.get([i])"
+                    *ngFor="let item of formGroup.controls.questionsForm['controls']; let i = index">
+                    <ng-template matStepLabel>Step {{i + 1}}</ng-template>
+                    <mat-form-field class="input-full-width">
+                        <input matInput placeholder="Input Your Question" formControlName="cont" required>
+                    </mat-form-field>
+                    <div class="btn-action-container">
+                        <button class="btn-action" mat-button matStepperPrevious>Back</button>
+                        <button class="btn-action" mat-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </form>
+    </mat-grid-tile>
+</mat-grid-list>
