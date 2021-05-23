@@ -1,4 +1,4 @@
-<div class="login-container" fxFlexFill fxLayoutAlign="baseline center">
+<div class="login-container" fxFlexFill fxLayoutAlign="center center">
     <mat-card class="login-card" fxLayout="column">
         <mat-card-header class="login-mat-header" fxLayoutAlign="space-evenly baseline">
             <div mat-card-avatar class="login-header-image">
@@ -7,19 +7,19 @@
             <mat-card-title class="login-lable">Login With Spring Boot</mat-card-title>
             <mat-card-subtitle class="login-lable">Test Project With Angular Client</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="login-mat-content" fxLayoutAlign="space-evenly baseline" style="font-size: 18px">
+        <mat-card-content class="login-mat-content" style="font-size: 18px">
             <div class="mat-login-forms">
                 <div class="mat-content">
                     <mat-toolbar color="primary">Login Section</mat-toolbar>
                 </div>
                 <div class="mat-content">
-                    <form fxLayoutAligh="stretch" fxLayout="column" [formGroup]="formGroup" (ngSubmit)="loginProcess()">
-                        <mat-form-field class="example-full-width">
+                    <form fxLayout="column" fxLayoutAlign="space-around stretch" [formGroup]="formGroup" (ngSubmit)="loginProcess()">
+                        <mat-form-field class="form-full-width">
                             <mat-label class="login-label">Your Username</mat-label>
                             <input matInput placeholder="Username" formControlName="username"
                                 (keydown.enter)="loginProcess()">
                         </mat-form-field>
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="form-full-width">
                             <mat-label class="login-label">Your Password</mat-label>
                             <input matInput type="password" placeholder="Enter Your Password Here"
                                 formControlName="password" (keydown.enter)="loginProcess()">

@@ -1,7 +1,7 @@
 .login-container {
     padding: 0px;
     border: 3px solid black;
-    margin-top: 10px;
+    margin: auto;
     /* background-image: url('../../../assets/login-screen.jpg'); */
     background-image: url('../../../assets/back-ground.jpg');
     background-size: cover;
@@ -9,8 +9,9 @@
 }
 
 .login-card {
-    width: 30%;
-    height: 95%;
+    width: auto;
+    height: auto;
+    display: block;
     background-color: rgb(15, 42, 72, 255);
     color: whitesmoke;
     margin-bottom: 10px;
@@ -21,21 +22,17 @@
     margin-bottom: 10px;
 }
 
-.login-mat-content {
-    display: block !important;
-}
-
-.login-mat-content .mat-content {
+.mat-content {
     margin-top: 10px;
 }
 
-.login-card .login-label {
+.login-label {
     color: whitesmoke;
 }
 
 .mat-card-action {
     border: 2px solid;
-    width: 70%;
+    width: 65%;
 }
 
 .mat-card-action::after {

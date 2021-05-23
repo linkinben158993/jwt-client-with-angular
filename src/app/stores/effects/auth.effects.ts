@@ -69,7 +69,7 @@ export class AuthEffects {
         console.log('Sign Up Payload:', payload);
         return this.authService.signUp(payload).pipe(
           map((newUser) => {
-            if (newUser[0].error) {
+            if (newUser[0]?.error) {
               console.log('Error New User:', newUser);
               return new SignUpFailure({ error: newUser[0].error.message });
             }
@@ -89,6 +89,7 @@ export class AuthEffects {
       ofType(AuthActionTypes.SIGNUP_SUCCESS),
       tap((user) => {
         console.log('Sign Up Success:', user);
+        this.message.showNotification('Sign Up Success!', 5);
         // localStorage.setItem('token', user.payload.token);
         // this.router.navigateByUrl('/');
       })
@@ -103,14 +104,16 @@ export class AuthEffects {
       })
     );
   }, { dispatch: false });
-
-  // @Effect({ dispatch: false })
-  // public LogOut: Observable<any> = this.actions.pipe(
-  //   ofType(AuthActionTypes.LOGOUT),
-  //   tap((user) => {
-  //     localStorage.removeItem('token');
-  //   })
-  // );
+  LogOut: Observable<any> = createEffect(() => {
+    return this.actions.pipe(
+      ofType(AuthActionTypes.LOGOUT),
+      tap((logout) => {
+        console.log(logout);
+        this.authService.logout();
+        this.router.navigateByUrl('/');
+      })
+    );
+  }, { dispatch: false });
 
   // @Effect({ dispatch: false })
   // GetStatus: Observable<any> = this.actions

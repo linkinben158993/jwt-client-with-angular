@@ -89,6 +89,6 @@ export class AuthServiceService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.CURRENT_USER);
   }
 }

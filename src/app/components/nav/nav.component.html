@@ -16,6 +16,23 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>JWT ADMIN CLIENT</span>
+      <span class="action-span">
+        <button mat-button (click)="processAdminReferral()">
+          <mat-icon>admin_panel_settings</mat-icon>Admin Referral
+        </button>
+
+        <button mat-button [matMenuTriggerFor]="actionMenu">
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #actionMenu="matMenu" yPosition="below">
+          <button mat-menu-item (click)="processEditProfile()">
+            <mat-icon>account_circle</mat-icon>Edit Profile
+          </button>
+          <button mat-menu-item (click)="processLogout()">
+            <mat-icon>logout</mat-icon>Logout
+          </button>
+        </mat-menu>
+      </span>
     </mat-toolbar>
     <mat-progress-bar class="example-margin" color="primary" mode="query" *ngIf="isProgressDisplay()">
     </mat-progress-bar>

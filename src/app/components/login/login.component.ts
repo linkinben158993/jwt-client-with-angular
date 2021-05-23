@@ -96,14 +96,14 @@ export class LoginComponent implements OnInit {
           if (result) {
             if (!result.username || !result.password || !result.dob) {
               this.message.showNotification('Must Fill In Information To Register', 3);
+              console.log('The dialog was closed without data!');
             }
             else {
               const formattedDate = new Date(result.dob).toISOString().substr(0, 10);
               this.store.dispatch(new SignUp({ email: result.username, password: result.password, dob: formattedDate }));
+              console.log('The dialog was closed with data!');
             }
-            console.log('The dialog was closed with data!');
           }
-          console.log('The dialog was closed without data!');
         },
         error: (err) => {
           console.log(err);

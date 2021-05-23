@@ -15,7 +15,7 @@ export interface DialogData {
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  private action: string;
+  public action: string;
 
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
