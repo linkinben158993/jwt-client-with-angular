@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginComponent } from '../login.component';
 
@@ -9,6 +9,12 @@ export interface DialogData {
   password: string;
   fullName: string;
   dob: string;
+  additionalInfo: FormArray;
+}
+
+interface AdditionalInfo {
+  value: string;
+  viewValue: string;
 }
 
 @Component({
@@ -21,9 +27,11 @@ export class ModalComponent implements OnInit {
   public dynamicForm: FormGroup;
   public action: string;
 
-  toppings = new FormControl();
-
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  addtionalInfo: AdditionalInfo[] = [
+    { value: 'password', viewValue: 'Password' },
+    { value: 'age', viewValue: 'Age' },
+    { value: 'dob', viewValue: 'Date' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -35,24 +43,35 @@ export class ModalComponent implements OnInit {
   ngOnInit(): void {
     this.dynamicForm = this.fb.group({
       additionalInfo: this.fb.array([])
-    })
+    });
   }
 
-  getAdditionalInfo(): FormArray {
+  getAdditionalInfos(): FormArray {
     return this.dynamicForm.get('additionalInfo') as FormArray;
   }
 
   addInfo(): void {
     const info = this.fb.group({
-      detail: []
+      detail: '',
+      selected: '',
     });
 
-    this.getAdditionalInfo().push(info);
+    this.getAdditionalInfos().push(info);
   }
 
   removeInfo(i): void {
-    this.getAdditionalInfo().removeAt(i);
-  } 
+    this.getAdditionalInfos().removeAt(i);
+  }
+
+  selectType(event: Event, i): void {
+    const selected = (event.target as HTMLSelectElement).value;
+    console.log(selected);
+    this.getAdditionalInfos().at(i).setValue({
+      detail: '',
+      selected,
+    });
+    this.data.additionalInfo = this.getAdditionalInfos();
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

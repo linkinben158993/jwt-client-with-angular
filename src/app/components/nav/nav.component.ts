@@ -9,7 +9,7 @@ import { DataService } from 'src/app/services/data/data.service';
 import { NotificationService } from 'src/app/services/notificationService/notification.service';
 import { LogOut } from 'src/app/stores/actions/auth.actions';
 import { AppState } from 'src/app/stores/app.states';
-import { ModalComponent } from '../login/modal/modal.component';
+import { DialogData, ModalComponent } from '../login/modal/modal.component';
 
 @Component({
   selector: 'app-nav',
@@ -31,14 +31,14 @@ export class NavComponent {
     public dialog: MatDialog) {
     this.display = false;
     this.subscription = this.dataService.onGetCommand.subscribe((item) => {
-      if (item['message']['msgCommand'] === 'START_PROGRESS_BAR') {
+      if (item.message.msgCommand === 'START_PROGRESS_BAR') {
         this.startProgressDisplay();
       }
-      if (item['message']['msgCommand'] === 'STOP_PROGRESS_BAR') {
+      if (item.message.msgCommand === 'STOP_PROGRESS_BAR') {
         this.stopProgressDisplay();
       }
-      if (item['message']['msgBody']) {
-        this.message.showNotification(item['message']['msgBody'], 3);
+      if (item.message.msgBody) {
+        this.message.showNotification(item.message.msgBody, 3);
       }
     });
   }
@@ -70,20 +70,39 @@ export class NavComponent {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '600px',
       height: '500px',
-      data: { action: 'refer', username: '', fullName: '' }
+      data: { action: 'refer', username: '', fullName: '', additionalInfo: [] }
     });
 
     dialogRef.afterClosed().subscribe(
       {
-        next: (result) => {
+        next: (result: DialogData) => {
           if (result) {
             if (!result.username || !result.fullName) {
               this.message.showNotification('Must Fill In Information To Refer', 3);
               console.log('The dialog was closed without data!');
             }
             else {
-              console.log('Result:', result);
-              console.log('The dialog was closed with data!');
+              const { username, fullName } = result;
+              if (result.additionalInfo.length > 0 || result.additionalInfo.valid) {
+                console.log('Do extra stuff');
+                const info = {};
+                for (let i = 0; i < result.additionalInfo.length; ++i) {
+                  info[result.additionalInfo.value[i].selected] = result.additionalInfo.value[i].detail;
+                }
+                const adminUser = {
+                  username,
+                  fullName,
+                  ...info,
+                };
+                console.log('Result:', adminUser);
+
+              } else {
+                console.log('Do your stuff');
+                const defaultAdminUser = {
+                  username, fullName, password: 'DEFAULT-PASSWORD'
+                };
+                console.log('Result:', defaultAdminUser);
+              }
             }
           }
         },

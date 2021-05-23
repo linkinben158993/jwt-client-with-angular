@@ -1,47 +1,5 @@
-<div mat-dialog-content class="modal-container">
+<div *ngIf="action === 'register'" [action]="action">
     <h1>{{action.toUpperCase()}}</h1>
-    <div *ngIf="action === 'register'" [action]="action">
-        <div class="field-container">
-            <mat-form-field appearance="legacy" class="field-input">
-                <mat-label>Username</mat-label>
-                <input matInput placeholder="Username" [(ngModel)]="data.username" required email #name="ngModel">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Hint</mat-hint>
-                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
-                    <div *ngIf="name.errors.required">
-                        Username is required.
-                    </div>
-                    <div *ngIf="name.errors.email">
-                        Should be an email.
-                    </div>
-                </div>
-            </mat-form-field>
-        </div>
-        <div class="field-container">
-            <mat-form-field appearance="standard" class="field-input">
-                <mat-label>Password</mat-label>
-                <input matInput placeholder="Password" [(ngModel)]="data.password" required type="password"
-                    #password="ngModel">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Hint</mat-hint>
-                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert">
-                    <div *ngIf="name.errors.required">
-                        Passoword is required.
-                    </div>
-                </div>
-            </mat-form-field>
-        </div>
-        <div class="field-container">
-            <mat-form-field appearance="fill" class="field-input">
-                <mat-label>Date Of Birth</mat-label>
-                <input matInput [matDatepicker]="picker" [(ngModel)]="data.dob">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </div>
-    </div>
-</div>
-<div *ngIf="action === 'refer'" [action]="action">
     <div class="field-container">
         <mat-form-field appearance="legacy" class="field-input">
             <mat-label>Username</mat-label>
@@ -59,9 +17,51 @@
         </mat-form-field>
     </div>
     <div class="field-container">
+        <mat-form-field appearance="standard" class="field-input">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" [(ngModel)]="data.password" required type="password"
+                #password="ngModel">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Hint</mat-hint>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert">
+                <div *ngIf="name.errors.required">
+                    Passoword is required.
+                </div>
+            </div>
+        </mat-form-field>
+    </div>
+    <div class="field-container">
+        <mat-form-field appearance="fill" class="field-input">
+            <mat-label>Date Of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="data.dob">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+<div *ngIf="action === 'refer'" [action]="action">
+    <h1>{{action.toUpperCase()}}</h1>
+    <div class="field-container">
+        <mat-form-field appearance="legacy" class="field-input">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" [(ngModel)]="data.username" required email #name="ngModel">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Hint</mat-hint>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+                <div *ngIf="name.errors.required">
+                    Username is required.
+                </div>
+                <div *ngIf="name.errors.email">
+                    Should be an email.
+                </div>
+            </div>
+        </mat-form-field>
+    </div>
+
+    <div class="field-container">
         <mat-form-field appearance="legacy" class="field-input">
             <mat-label>Fullname</mat-label>
-            <input matInput placeholder="Fullname" [(ngModel)]="data.fullName" required email #name="ngModel">
+            <input matInput placeholder="Fullname" [(ngModel)]="data.fullName" required #name="ngModel">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
             <mat-hint>Hint</mat-hint>
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
@@ -72,27 +72,25 @@
         </mat-form-field>
     </div>
 
-    <hr>
-    <form [formGroup]="dynamicForm">
-
-        Value: {{dynamicForm.value | json}}
-        <hr>
+    <h1>Additional Information</h1>
+    <form [formGroup]="dynamicForm" class="field-container">
         <div formArrayName="additionalInfo">
-            <div *ngFor="let item of getAdditionalInfo().controls; let i = index" [formGroupName]="i">
-                <mat-form-field appearance="fill">
-                    <mat-label>Toppings</mat-label>
-                    <mat-select [formControl]="toppings" multiple>
-                        <mat-select-trigger>
-                            {{toppings.value ? toppings.value[0] : ''}}
-                            <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
-                                (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
-                            </span>
-                        </mat-select-trigger>
-                        <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-                    </mat-select>
+            <div class="dynamic-form-container" *ngFor="let item of getAdditionalInfos().controls; let i = index"
+                [formGroupName]="i">
+                <mat-form-field appearance="fill" class="dynamic-selector">
+                    <mat-label>Type</mat-label>
+                    <select matNativeControl (change)="selectType($event, i)">
+                        <option value="" selected></option>
+                        <option *ngFor="let option of addtionalInfo" [value]="option.value">{{ option.viewValue }}
+                        </option>
+                    </select>
                 </mat-form-field>
-
-                <button mat-raised-button color="warn" (click)="removeInfo(i)">Delete</button>
+                <mat-form-field appearance="legacy" class="field-input" class="dynamic-form">
+                    <mat-label>Question</mat-label>
+                    <input matInput placeholder="Question" formControlName="detail" required>
+                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                </mat-form-field>
+                <button class="dynamic-action" mat-raised-button color="warn" (click)="removeInfo(i)">Delete</button>
             </div>
         </div>
         <button mat-raised-button color="primary" (click)="addInfo()">Additional Info</button>

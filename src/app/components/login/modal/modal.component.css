@@ -19,3 +19,20 @@
 .alert{
     color: red;
 }
+
+.dynamic-form-container{
+    display: inline-block;
+    width: 100%;
+}
+
+.dynamic-selector{
+    width: 20%;
+}
+
+.dynamic-form{
+    width: 60%;
+}
+
+.dynamic-action{
+    width: 20%;
+}
