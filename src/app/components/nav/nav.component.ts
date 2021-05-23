@@ -68,7 +68,7 @@ export class NavComponent {
   processAdminReferral(): void {
     console.log('Refer new admin!');
     const dialogRef = this.dialog.open(ModalComponent, {
-      width: '400px',
+      width: '600px',
       height: '500px',
       data: { action: 'refer', username: '', fullName: '' }
     });

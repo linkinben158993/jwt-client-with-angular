@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-<div  *ngIf="action === 'refer'" [action]="action">
+<div *ngIf="action === 'refer'" [action]="action">
     <div class="field-container">
         <mat-form-field appearance="legacy" class="field-input">
             <mat-label>Username</mat-label>
@@ -71,6 +71,33 @@
             </div>
         </mat-form-field>
     </div>
+
+    <hr>
+    <form [formGroup]="dynamicForm">
+
+        Value: {{dynamicForm.value | json}}
+        <hr>
+        <div formArrayName="additionalInfo">
+            <div *ngFor="let item of getAdditionalInfo().controls; let i = index" [formGroupName]="i">
+                <mat-form-field appearance="fill">
+                    <mat-label>Toppings</mat-label>
+                    <mat-select [formControl]="toppings" multiple>
+                        <mat-select-trigger>
+                            {{toppings.value ? toppings.value[0] : ''}}
+                            <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
+                                (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button color="warn" (click)="removeInfo(i)">Delete</button>
+            </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="addInfo()">Additional Info</button>
+
+    </form>
 </div>
 
 <div mat-dialog-actions class="action-container">
