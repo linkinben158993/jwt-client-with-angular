@@ -19,3 +19,23 @@
 .card-title-container{
     width: 100%;
 }
+
+.done-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.done-card {
+    max-width: 300px;
+}
+
+.done-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+.questions{
+    width: 100%;
+}

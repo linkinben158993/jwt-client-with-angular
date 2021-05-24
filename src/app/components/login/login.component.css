@@ -4,6 +4,7 @@
     margin: auto;
     /* background-image: url('../../../assets/login-screen.jpg'); */
     background-image: url('../../../assets/back-ground.jpg');
+    transition: all 0.9s ease;
     background-size: cover;
     opacity: 85%;
 }

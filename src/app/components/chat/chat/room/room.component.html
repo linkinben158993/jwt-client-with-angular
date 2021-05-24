@@ -18,20 +18,56 @@
     <mat-grid-tile [rowspan]="1">
         <mat-card class="card-title-container">Your Questions Will Should Appear Bellow!</mat-card>
     </mat-grid-tile>
-    <mat-grid-tile [rowspan]="3">
+    <mat-grid-tile [rowspan]="5">
         <form class="form-container" [formGroup]="formGroup">
-            <mat-horizontal-stepper formArrayName="questionsForm" linear>
-                <mat-step [formGroupName]="i" [stepControl]="questionsForm.get([i])"
-                    *ngFor="let item of formGroup.controls.questionsForm['controls']; let i = index">
-                    <ng-template matStepLabel>Step {{i + 1}}</ng-template>
-                    <mat-form-field class="input-full-width">
-                        <input matInput placeholder="Input Your Question" formControlName="cont" required>
-                    </mat-form-field>
-                    <div class="btn-action-container">
-                        <button class="btn-action" mat-button matStepperPrevious>Back</button>
-                        <button class="btn-action" mat-button matStepperNext>Next</button>
-                    </div>
-                </mat-step>
+            <mat-horizontal-stepper formArrayName="questionsForm" linear #stepper>
+                <div *ngFor="let item of formGroup.controls.questionsForm['controls']; let i = index">
+                    <mat-step [formGroupName]="i" [stepControl]="questionsForm.get([i])">
+                        <ng-template matStepLabel>Step {{i + 1}}</ng-template>
+                        <mat-form-field class="input-full-width">
+                            <input matInput placeholder="Input Your Question" formControlName="cont" required>
+                        </mat-form-field>
+                        <div class="btn-action-container">
+                            <button class="btn-action" mat-button matStepperPrevious>Back</button>
+                            <button class="btn-action" mat-button matStepperNext>Next</button>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="i === questionsForm.length - 1" [formGroupName]="last">
+                        <ng-template matStepLabel>Done</ng-template>
+                        <div class="done-container">
+                            <mat-card class="done-card">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="done-header-image"></div>
+                                    <mat-card-title>Confirming</mat-card-title>
+                                    <mat-card-subtitle>Preparing For Your Room</mat-card-subtitle>
+                                </mat-card-header>
+                                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                                    alt="Photo of a Shiba Inu">
+                                <mat-card-actions class="btn-action-container">
+                                    <button class="btn-action" mat-button matStepperPrevious>Back</button>
+                                    <button class="btn-action" mat-button (click)="stepper.reset()">Reset</button>
+                                    <button class="btn-action" mat-button (click)="doneValue()">Done</button>
+                                </mat-card-actions>
+                            </mat-card>
+                            <mat-card class="done-card questions">
+                                <mat-card-header>
+                                    <mat-card-title>Questions</mat-card-title>
+                                    <mat-card-subtitle>Your questions</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <mat-selection-list #shoes [multiple]="false">
+                                        <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+                                            {{shoe}}
+                                        </mat-list-option>
+                                    </mat-selection-list>
+                                    <p>
+                                        Option selected: {{shoes.selectedOptions.selected[0]?.value}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </mat-step>
+                </div>
             </mat-horizontal-stepper>
         </form>
     </mat-grid-tile>

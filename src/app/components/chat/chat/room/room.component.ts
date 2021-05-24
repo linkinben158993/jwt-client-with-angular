@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'src/app/services/notificationService/notification.service';
 
 interface Question {
   questionLabel: number;
@@ -21,13 +22,16 @@ export class RoomComponent implements OnInit {
 
   formGroup: FormGroup;
   questionsForm: FormArray;
-  constructor(private formBuilder: FormBuilder) {
+
+  typesOfShoes: string[] = ['What the fuck is your problems mate?', 'CS:GO Is For Slavs?', 'Jazz Is The Jap?', 'Cowboy Bebop And Jazz?', `That's right mate?`];
+
+  constructor(private formBuilder: FormBuilder, private message: NotificationService) {
 
   }
 
   ngOnInit(): void {
     this.questionNumber = this.formBuilder.group({
-      questionNumber: ['', Validators.required]
+      questionNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$')])
     });
     this.formGroup = this.formBuilder.group({
       questionsForm: this.formBuilder.array([])
@@ -40,15 +44,27 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  addItem(): void {
+  addItem(numberOfQuestions: number): void {
     this.questionsForm = this.formGroup.get('questionsForm') as FormArray;
-    if (this.questionsForm.length < 10) {
-      this.questionsForm.push(this.init());
+    for (let i = 0; i < numberOfQuestions; ++i) {
+      if (this.questionsForm.length < 10) {
+        this.questionsForm.push(this.init());
+      }
+      else {
+        this.message.showNotification('Number of question should be less than 10!', 3);
+        break;
+      }
     }
+
   }
 
   setDynamicStep(): void {
-    this.addItem();
+    console.log('Something happened!');
+    if (this.questionNumber.valid) {
+      this.addItem(this.questionNumber.value.questionNumber);
+    } else {
+      this.message.showNotification('Invalid input!', 3);
+    }
   }
 
   resetSteps(): void {
@@ -57,7 +73,9 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  doneValue(stepperResult): void {
-    console.log('Stepper response:', stepperResult);
+  doneValue(): void {
+    if (this.formGroup.valid) {
+      console.log(this.formGroup.value);
+    }
   }
 }
