@@ -34,6 +34,16 @@ export class AdminUserService {
     );
   }
 
+  public getUserProfile(token: string): Observable<any> {
+    return this.httpClient.get<any>(
+      `${baseUrl + EndPoints.USER_ME}`,
+      { headers: { access_token: `Bearer ${token}` } }
+    ).pipe(
+      map(res => res?.data ?? res),
+      catchError(error => of(null))
+    );
+  }
+
   public updateAllUnRoledUser(): Observable<any> {
     return this.httpClient.get<GetResponse>(`${baseUrl + EndPoints.USER_UPDATE_ROLE}`, this.apiFactory).pipe(
       map((response) => {

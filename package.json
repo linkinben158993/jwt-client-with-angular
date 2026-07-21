@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build",
+    "test": "set NODE_OPTIONS=--openssl-legacy-provider && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -32,6 +32,9 @@
     "sockjs-client": "^1.5.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
+  },
+  "overrides": {
+    "postcss": "8.4.31"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.0",

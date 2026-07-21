@@ -3,10 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/services/notificationService/notification.service';
-import { LogIn, SignUp } from 'src/app/stores/actions/auth.actions';
+import { AuthServiceService } from 'src/app/services/authService/auth-service.service';
+import { LogIn, LogInSuccess, SignUp } from 'src/app/stores/actions/auth.actions';
 import { AppState, selectAuthState } from 'src/app/stores/app.states';
 import { ModalComponent } from './modal/modal.component';
 
@@ -26,15 +26,30 @@ export class LoginComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
+    private authService: AuthServiceService,
     private message: NotificationService,
     public dialog: MatDialog) {
     this.getState = this.store.select(selectAuthState);
-    this.socialProvider = 'http://localhost:4201/oauth2/login';
+    // Spring Security's OAuth2 initiation path — /oauth2/authorization/{registrationId}
+    this.socialProvider = 'http://localhost:4201/oauth2/authorization/auth0';
     this.route.params.subscribe((params) => {
       if (params?.credential) {
-        const credential = jwt_decode(params.credential);
-        const credentialObject = JSON.parse(credential['sub']);
-        console.log(credentialObject);
+        this.authService.loginWithCredential(params.credential).subscribe({
+          next: (response) => {
+            if (response?.response?.data) {
+              this.store.dispatch(new LogInSuccess({
+                token: response.response.data.accessToken,
+                refreshToken: response.response.data.refreshToken,
+                username: response.response.data.uName,
+                uId: response.response.data.uId,
+                role: response.response.data.role
+              }));
+            } else {
+              this.message.showNotification('OAuth2 login failed', 3);
+            }
+          },
+          error: () => this.message.showNotification('OAuth2 login failed', 3)
+        });
       }
     });
   }

@@ -30,16 +30,35 @@ export class AuthServiceService {
     )
   }
 
+  loginWithCredential(credential: string): Observable<any> {
+    return this.http.post<any>(`${baseUrl + EndPoints.OAUTH2_LOGIN}`, { credential }).pipe(
+      tap(result => {
+        if (result?.response?.data) {
+          const user = new User(
+            result.response.data.uId,
+            result.response.data.uName,
+            result.response.data.accessToken,
+            result.response.data.refreshToken,
+            'oauth2',
+            result.response.data.role
+          );
+          this.storeUser(user);
+        }
+      }),
+      catchError(error => of([error]))
+    );
+  }
+
   login(data): Observable<any> {
     return this.http.post<any>(`${baseUrl + EndPoints.LOGIN}`, data).pipe(
       tap(result => {
-        // this.storeJwtToken(result.response.data.accessToken);
-        // this.storeRefreshToken(result.response.data.refreshToken);
         const user = new User(
+          result.response.data.uId,
+          result.response.data.uName,
           result.response.data.accessToken,
-          data.username,
-          result.response.data.accessToken,
-          result.response.data.refreshToken
+          result.response.data.refreshToken,
+          'password',
+          result.response.data.role
         );
         this.storeUser(user);
         mapTo([true, result]);
@@ -86,6 +105,26 @@ export class AuthServiceService {
       }
     }
     return isExired;
+  }
+
+  getAccessToken(): string | null {
+    const raw = localStorage.getItem(this.CURRENT_USER);
+    if (!raw) return null;
+    try {
+      return (JSON.parse(raw) as User).token ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  logoutBackend(accessToken: string): Observable<any> {
+    return this.http.post<any>(
+      `${baseUrl + EndPoints.LOGOUT}`,
+      {},
+      { headers: { access_token: `Bearer ${accessToken}` } }
+    ).pipe(
+      catchError(() => of(null))
+    );
   }
 
   logout(): void {

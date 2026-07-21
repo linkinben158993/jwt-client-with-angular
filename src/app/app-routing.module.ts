@@ -6,12 +6,14 @@ import { ChatComponent } from './components/chat/chat/chat.component';
 import { RoomComponent } from './components/chat/chat/room/room.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { UserLandingComponent } from './components/user-landing/user-landing.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'login', canActivate: [AuthGuardService], canLoad: [AuthGuardService], component: LoginComponent },
   { path: 'login/:credential', canActivate: [AuthGuardService], canLoad: [AuthGuardService], component: LoginComponent },
   { path: 'home', canActivate: [HomeGuardService], canLoad: [HomeGuardService], component: HomeComponent },
+  { path: 'user', canActivate: [HomeGuardService], canLoad: [HomeGuardService], component: UserLandingComponent },
   { path: 'chat', canActivate: [HomeGuardService], canLoad: [HomeGuardService], component: ChatComponent },
   { path: 'private-chat', canActivate: [HomeGuardService], canLoad: [HomeGuardService], component: RoomComponent },
 ]

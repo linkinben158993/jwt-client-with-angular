@@ -43,6 +43,7 @@ import { TableComponent } from './components/home/table/table.component';
 import { LoginComponent } from './components/login/login.component';
 import { ModalComponent } from './components/login/modal/modal.component';
 import { NavComponent } from './components/nav/nav.component';
+import { UserLandingComponent } from './components/user-landing/user-landing.component';
 import { APIFactory } from './services/API/apiFactory';
 import { AuthServiceService } from './services/authService/auth-service.service';
 import { AdminUserService } from './services/userService/admin-user.service';
@@ -61,7 +62,8 @@ import { AuthEffects } from './stores/effects/auth.effects';
     ChatComponent,
     DialogComponent,
     ParticipantsComponent,
-    RoomComponent
+    RoomComponent,
+    UserLandingComponent
   ],
   imports: [
     BrowserModule,

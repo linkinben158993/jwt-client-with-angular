@@ -45,9 +45,9 @@ export class AuthEffects {
   LogInSuccess: Observable<any> = createEffect(() => {
     return this.actions.pipe(
       ofType(AuthActionTypes.LOGIN_SUCCESS),
-      tap((user: LogInSuccess) => {
-        console.log('Login success dispatch!', user);
-        this.router.navigateByUrl('/home');
+      tap((action: LogInSuccess) => {
+        const route = action.payload?.role === 'ROLE_ADMIN' ? '/home' : '/user';
+        this.router.navigateByUrl(route);
       }),
     );
   }, { dispatch: false });
@@ -107,10 +107,29 @@ export class AuthEffects {
   LogOut: Observable<any> = createEffect(() => {
     return this.actions.pipe(
       ofType(AuthActionTypes.LOGOUT),
-      tap((logout) => {
-        console.log(logout);
-        this.authService.logout();
-        this.router.navigateByUrl('/');
+      switchMap(() => {
+        const token = this.authService.getAccessToken();
+        if (!token) {
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          return of(null);
+        }
+        return this.authService.logoutBackend(token).pipe(
+          tap((res) => {
+            this.authService.logout();
+            if (res?.auth0LogoutUrl) {
+              window.location.href = res.auth0LogoutUrl;
+            } else {
+              this.router.navigateByUrl('/');
+            }
+          }),
+          catchError(() => {
+            // Backend unreachable — still clear local session
+            this.authService.logout();
+            this.router.navigateByUrl('/');
+            return of(null);
+          })
+        );
       })
     );
   }, { dispatch: false });

@@ -3,17 +3,16 @@ import { AuthActions, AuthActionTypes } from '../actions/auth.actions';
 
 
 export interface AppState {
-  // Is a user authenticated?
   isAuthenticated: boolean;
-  // If authenticated, there should be a user object
   user: User | null;
-  // Error message
+  role: string | null;
   errorMessage: string | null;
 }
 
 export const initialState: AppState = {
   isAuthenticated: false,
   user: null,
+  role: null,
   errorMessage: null
 };
 
@@ -28,6 +27,7 @@ export function reducer(state = initialState, action: AuthActions): AppState {
           username: action.payload.username,
           token: action.payload.token,
         },
+        role: action.payload.role ?? null,
         errorMessage: null
       };
     }

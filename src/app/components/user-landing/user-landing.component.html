@@ -1,0 +1,35 @@
+<div class="user-landing-container">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>account_circle</mat-icon>
+      <mat-card-title>Welcome back</mat-card-title>
+      <mat-card-subtitle>{{ username }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="status">Loading profile…</div>
+      <div *ngIf="error" class="status error">{{ error }}</div>
+
+      <div *ngIf="profile && !loading" class="profile-grid">
+        <div class="profile-row">
+          <span class="label">Email</span>
+          <span class="value">{{ profile.email }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Full name</span>
+          <span class="value">{{ profile.fullName }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="label">Role</span>
+          <span class="value role-badge">{{ profile.role }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" routerLink="/chat">
+        <mat-icon>chat</mat-icon> Go to Chat
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
