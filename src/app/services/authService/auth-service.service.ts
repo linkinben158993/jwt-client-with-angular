@@ -117,6 +117,33 @@ export class AuthServiceService {
     }
   }
 
+  getRefreshToken(): string | null {
+    const raw = localStorage.getItem(this.CURRENT_USER);
+    if (!raw) return null;
+    try {
+      return (JSON.parse(raw) as User).refreshToken ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Overwrite the stored access token in CURR_USER after a successful refresh.
+  updateAccessToken(newAccessToken: string): void {
+    const raw = localStorage.getItem(this.CURRENT_USER);
+    if (!raw) return;
+    const user = JSON.parse(raw) as User;
+    user.token = newAccessToken;
+    localStorage.setItem(this.CURRENT_USER, JSON.stringify(user));
+  }
+
+  // POST /api/auth/token/refresh with the refresh token; backend returns a fresh access token.
+  refreshAccessToken(): Observable<any> {
+    const refreshToken = this.getRefreshToken();
+    return this.http.post<any>(`${baseUrl + EndPoints.TOKEN_REFRESH}`, {}, {
+      headers: { refresh_token: `Bearer ${refreshToken}` }
+    });
+  }
+
   logoutBackend(accessToken: string): Observable<any> {
     return this.http.post<any>(
       `${baseUrl + EndPoints.LOGOUT}`,
