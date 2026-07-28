@@ -3,6 +3,7 @@ export const EndPoints = {
     LOGIN: 'api/auth/login',
     LOGOUT: 'api/auth/logout',
     OAUTH2_LOGIN: 'api/auth/oauth2/login',
+    TOKEN_REFRESH: 'api/auth/token/refresh',
     USER_ALL: 'api/users',
     USER_ME: 'api/users/me',
     USER_UPDATE_ROLE: 'api/users/roles',

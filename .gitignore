@@ -46,3 +46,10 @@ testem.log
 Thumbs.db
 
 Todo.txt
+
+# Claude Code / AI workspace — local only, not part of the app source
+/docs/
+/CLAUDE.md
+/.claude/
+/.mcp.json
+/.anthropic/

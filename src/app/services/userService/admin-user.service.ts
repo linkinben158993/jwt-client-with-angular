@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Users } from 'src/app/models/admin-users/users.model';
 import { baseUrl } from 'src/environments/environment';
-import { APIFactory } from '../API/apiFactory';
 import { EndPoints } from '../API/endPoints';
 
 interface GetResponse {
@@ -16,12 +15,13 @@ interface GetResponse {
 })
 export class AdminUserService {
 
-  constructor(private httpClient: HttpClient, private apiFactory: APIFactory) {
+  // Auth headers are attached centrally by AuthInterceptor — no per-call header wiring needed.
+  constructor(private httpClient: HttpClient) {
 
   }
 
   public getAllUser(): Observable<Users[]> {
-    return this.httpClient.get<GetResponse>(`${baseUrl + EndPoints.USER_ALL}`, this.apiFactory).pipe(
+    return this.httpClient.get<GetResponse>(`${baseUrl + EndPoints.USER_ALL}`).pipe(
       map((userItem) => {
         // Can do some effect here?
         // console.log('From service:', userItem);
@@ -45,7 +45,7 @@ export class AdminUserService {
   }
 
   public updateAllUnRoledUser(): Observable<any> {
-    return this.httpClient.get<GetResponse>(`${baseUrl + EndPoints.USER_UPDATE_ROLE}`, this.apiFactory).pipe(
+    return this.httpClient.get<GetResponse>(`${baseUrl + EndPoints.USER_UPDATE_ROLE}`).pipe(
       map((response) => {
         return response;
       }),

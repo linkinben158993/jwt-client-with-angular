@@ -1,6 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,7 +44,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ModalComponent } from './components/login/modal/modal.component';
 import { NavComponent } from './components/nav/nav.component';
 import { UserLandingComponent } from './components/user-landing/user-landing.component';
-import { APIFactory } from './services/API/apiFactory';
+import { AuthInterceptor } from './services/API/auth.interceptor';
 import { AuthServiceService } from './services/authService/auth-service.service';
 import { AdminUserService } from './services/userService/admin-user.service';
 import { reducers } from './stores/app.states';
@@ -103,7 +103,8 @@ import { AuthEffects } from './stores/effects/auth.effects';
     EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [
-    AuthServiceService, AdminUserService, APIFactory
+    AuthServiceService, AdminUserService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
