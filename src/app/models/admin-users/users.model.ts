@@ -5,6 +5,7 @@ export class Users {
     password?: string;
     age?: string;
     dob?: string;
+    role?: string;   // contract-first: flat role name from UserResponse ("NO_ROLE" when unassigned)
     roles?: any;
     constructor(uId, email, fullName, age, dob, roles) {
         this.uId = uId;

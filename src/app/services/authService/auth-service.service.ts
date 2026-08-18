@@ -33,14 +33,14 @@ export class AuthServiceService {
   loginWithCredential(credential: string): Observable<any> {
     return this.http.post<any>(`${baseUrl + EndPoints.OAUTH2_LOGIN}`, { credential }).pipe(
       tap(result => {
-        if (result?.response?.data) {
+        if (result?.accessToken) {
           const user = new User(
-            result.response.data.uId,
-            result.response.data.uName,
-            result.response.data.accessToken,
-            result.response.data.refreshToken,
+            result.uId,
+            result.uName,
+            result.accessToken,
+            result.refreshToken,
             'oauth2',
-            result.response.data.role
+            result.role
           );
           this.storeUser(user);
         }
@@ -53,12 +53,12 @@ export class AuthServiceService {
     return this.http.post<any>(`${baseUrl + EndPoints.LOGIN}`, data).pipe(
       tap(result => {
         const user = new User(
-          result.response.data.uId,
-          result.response.data.uName,
-          result.response.data.accessToken,
-          result.response.data.refreshToken,
+          result.uId,
+          result.uName,
+          result.accessToken,
+          result.refreshToken,
           'password',
-          result.response.data.role
+          result.role
         );
         this.storeUser(user);
         mapTo([true, result]);
@@ -140,7 +140,7 @@ export class AuthServiceService {
   refreshAccessToken(): Observable<any> {
     const refreshToken = this.getRefreshToken();
     return this.http.post<any>(`${baseUrl + EndPoints.TOKEN_REFRESH}`, {}, {
-      headers: { refresh_token: `Bearer ${refreshToken}` }
+      headers: { Authorization: `Bearer ${refreshToken}` }
     });
   }
 
@@ -148,7 +148,7 @@ export class AuthServiceService {
     return this.http.post<any>(
       `${baseUrl + EndPoints.LOGOUT}`,
       {},
-      { headers: { access_token: `Bearer ${accessToken}` } }
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     ).pipe(
       catchError(() => of(null))
     );

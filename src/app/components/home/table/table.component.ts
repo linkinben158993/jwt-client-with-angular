@@ -44,16 +44,12 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   loadAllUsers(): void {
     this.usersService.getAllUser().subscribe((data) => {
-      const dataWithRole = data.map((item) => {
-        if (item.roles.length === 0) {
-          return {
-            ...item, role: 'No Role Yet!'
-          };
-        }
-        return {
-          ...item, role: item.roles[0].rName,
-        };
-      });
+      // Contract-first (O-4b): UserResponse carries a flat `role` string ("NO_ROLE" sentinel when unassigned)
+      // instead of the old nested roles[] entity graph.
+      const dataWithRole = data.map((item) => ({
+        ...item,
+        role: (!item.role || item.role === 'NO_ROLE') ? 'No Role Yet!' : item.role,
+      }));
       this.dataSource.data = dataWithRole;
     }, error => error, () => {
       this.dataService.onGetCommand.emit({

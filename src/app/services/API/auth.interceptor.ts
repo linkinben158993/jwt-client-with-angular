@@ -50,7 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return this.auth.refreshAccessToken().pipe(
       switchMap((res: any) => {
-        const newAccess = res?.response?.data?.accessToken;
+        const newAccess = res?.accessToken;
         if (!newAccess) {
           return this.forceLogin('refresh returned no token');
         }
@@ -62,7 +62,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private withAccessToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
-    return req.clone({ setHeaders: { access_token: `Bearer ${token}` } });
+    return req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 
   private isAuthEndpoint(url: string): boolean {
