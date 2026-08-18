@@ -36,13 +36,13 @@ export class LoginComponent implements OnInit {
       if (params?.credential) {
         this.authService.loginWithCredential(params.credential).subscribe({
           next: (response) => {
-            if (response?.response?.data) {
+            if (response?.accessToken) {
               this.store.dispatch(new LogInSuccess({
-                token: response.response.data.accessToken,
-                refreshToken: response.response.data.refreshToken,
-                username: response.response.data.uName,
-                uId: response.response.data.uId,
-                role: response.response.data.role
+                token: response.accessToken,
+                refreshToken: response.refreshToken,
+                username: response.uName,
+                uId: response.uId,
+                role: response.role
               }));
             } else {
               this.message.showNotification('OAuth2 login failed', 3);

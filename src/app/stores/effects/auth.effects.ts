@@ -23,16 +23,17 @@ export class AuthEffects {
       , map((action: LogIn) => action.payload)
       , switchMap(payload => {
         return this.authService.login(payload).pipe(map((response) => {
-          if (!response.response) {
+          if (!response?.accessToken) {
             return new LogInFailure({ error: response[0].error.message });
           }
           else {
             this.message.showNotification('Login Success!', 5);
             return new LogInSuccess({
-              token: response.response.data.accessToken,
-              refreshToken: response.response.data.refreshToken,
-              username: response.response.data.uName,
-              uId: response.response.data.uId
+              token: response.accessToken,
+              refreshToken: response.refreshToken,
+              username: response.uName,
+              uId: response.uId,
+              role: response.role
             });
           }
         })
